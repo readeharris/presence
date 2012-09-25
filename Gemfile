@@ -22,4 +22,6 @@ group :test do
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'timecop'
+  gem 'mocha'
+  gem 'bourne'
 end

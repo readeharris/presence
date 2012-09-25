@@ -1,14 +1,12 @@
 require_relative '../../app/models/user_reminder'
 
 describe UserReminder do
-  describe '.remind_users' do
-    it 'reminds the given users' do
-      users = [stub.as_null_object, stub.as_null_object, stub.as_null_object]
-      UserReminder.remind!(users)
+  it 'can remind any number of given users' do
+    users = [stub_everything, stub_everything, stub_everything]
+    UserReminder.remind(users)
 
-      users.each do |user|
-        expect(user).to have_received(:remind!)
-      end
+    users.each do |user|
+      expect(user).to have_received(:remind)
     end
   end
 end

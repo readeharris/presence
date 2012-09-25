@@ -1,7 +1,7 @@
 class UserReminder
-  def self.remind!(users)
+  def self.remind(users)
     users.each do |user|
-      user.remind!
+      user.remind
     end
   end
 end

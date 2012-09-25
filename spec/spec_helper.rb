@@ -1,12 +1,22 @@
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
+require 'bundler/setup'
+require 'active_support/core_ext'
+require 'timecop'
+require 'bourne'
+require 'pry'
 
-require 'spec_helper_lite'
+Dir["spec/support/**/*.rb"].each    { |f| require File.expand_path(f) }
+Dir["spec/acceptance/**/*.rb"].each { |f| require File.expand_path(f) }
+Dir["app/models/**/*.rb"].each      { |f| require File.expand_path(f) }
+Dir["app/observers/**/*.rb"].each   { |f| require File.expand_path(f) }
 
 RSpec.configure do |config|
-  # If true, the base class of anonymous controllers will be inferred
-  # automatically. This will be the default behavior in future versions of
-  # rspec-rails.
-  config.infer_base_class_for_anonymous_controllers = false
+  config.mock_with :mocha
+  config.order = "random"
+
+  config.include TimeHelpers
+
+  # Global Setup/Teardown
+  config.before(:each) do
+    UserObserver.forget_users
+  end
 end
