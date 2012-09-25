@@ -14,10 +14,12 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
+  gem 'pry'
 end
 
 group :test do
   gem 'turnip'
   gem 'capybara'
   gem 'capybara-webkit'
+  gem 'timecop'
 end
