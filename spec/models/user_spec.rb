@@ -6,7 +6,7 @@ describe User do
   let(:user) { User.new }
 
   describe 'reminder monitor' do
-    it 'has an reminder monitor by default' do
+    it 'has a reminder monitor by default' do
       user.reminder_monitor.should be_a ReminderMonitor
     end
 

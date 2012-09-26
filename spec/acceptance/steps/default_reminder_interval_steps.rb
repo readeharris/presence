@@ -17,19 +17,11 @@ step 'I am using the default interval' do
 end
 
 step ':number_of minutes pass' do |number_of|
-  @current_time = number_of.minutes.from_now
-end
-
-placeholder :number_of do
-  match /\d+/ do |count|
-    count.to_i
-  end
+  Timecop.travel(number_of.minutes.from_now)
 end
 
 step 'the reminder job runs' do
-  at_time @current_time do
-    UserReminder.remind(UserObserver.all_users)
-  end
+  UserReminder.remind(UserObserver.all_users)
 end
 
 step 'I should be reminded via push notification' do

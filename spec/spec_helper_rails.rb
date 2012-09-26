@@ -2,7 +2,7 @@ ENV["RAILS_ENV"] ||= 'test'
 
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'spec_helper_lite'
+require 'spec_helper'
 
 RSpec.configure do |config|
   # If true, the base class of anonymous controllers will be inferred

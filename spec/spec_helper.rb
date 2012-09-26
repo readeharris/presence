@@ -19,4 +19,8 @@ RSpec.configure do |config|
   config.before(:each) do
     UserObserver.forget_users
   end
+
+  config.after(:each) do
+    Timecop.return
+  end
 end

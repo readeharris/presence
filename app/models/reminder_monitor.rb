@@ -1,6 +1,4 @@
 class ReminderMonitor
-  attr_reader :user
-
   def initialize(user)
     @user = user
     @created_at = Time.now
@@ -10,15 +8,15 @@ class ReminderMonitor
 
   def remind
     if time_to_remind?
-      send_push_notification_to(@user)
+      send_push_notification_to_user
       update_last_reminded_time
     end
   end
 
   private
 
-  def send_push_notification_to(user)
-    PushNotification.new.push_to(user)
+  def send_push_notification_to_user
+    PushNotification.new.push_to(@user)
   end
 
   def update_last_reminded_time
