@@ -1,15 +1,10 @@
-step 'push notifications are stubbed' do
-  @push_notification = stub(:push_to)
-  PushNotification.stubs(:new).returns(@push_notification)
-end
-
 step 'I am a Presence user' do
-  @user = User.new
+  @test_user = User.new
 
   # Notify observers that the user exists. This is only necessary
   # until persistence is added.
-  @user.changed
-  @user.notify_observers(@user)
+  @test_user.changed
+  @test_user.notify_observers(@test_user)
 end
 
 step 'I am using the default interval' do
@@ -22,12 +17,16 @@ end
 
 step 'the reminder job runs' do
   UserReminder.remind(UserObserver.all_users)
+
+  # Used for further testing of reminders.
+  @most_recent_reminder = @test_user.reminders.last
 end
 
-step 'I should be reminded via push notification' do
-  expect(@push_notification).to have_received(:push_to).with(@user)
+step 'I should be reminded with a push notification' do
+  expect { step 'the reminder job runs' }.to change { @test_user.reminders.count }.by(1)
+  expect(@most_recent_reminder).to be_a PushNotification
 end
 
-step 'I should not be reminded via push notification' do
-  expect(@push_notification).to have_received(:push_to).never
+step 'I should not be reminded' do
+  expect { step 'the reminder job runs' }.not_to change { @test_user.reminders.count }
 end
