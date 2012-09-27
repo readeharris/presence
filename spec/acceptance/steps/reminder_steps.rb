@@ -1,5 +1,14 @@
-step 'I have set a starting interval of 10 minutes' do
-  @test_user.reminder_monitor.interval = 10.minutes
+step 'the reminder job runs' do
+  UserReminder.remind(UserObserver.all_users)
+end
+
+step 'I should not be reminded' do
+  expect { step 'the reminder job runs' }.not_to change { @test_user.reminders.count }
+end
+
+step 'I should be reminded with a push notification' do
+  expect { step 'the reminder job runs' }.to change { @test_user.reminders.count }.by(1)
+  expect(most_recent_reminder).to be_a PushNotification
 end
 
 step 'the first reminder should occur in 10 minutes' do
