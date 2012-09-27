@@ -11,12 +11,12 @@ step 'I should be reminded with a push notification' do
   expect(most_recent_reminder).to be_a PushNotification
 end
 
-step 'the first reminder should occur in 10 minutes' do
-  at_time(10.minutes.from_now - 1.second) do
+step 'the first reminder should occur in :number_of minutes' do |number_of|
+  at_time(number_of.minutes.from_now - 1.second) do
     step 'I should not be reminded'
   end
 
-  at_time(10.minutes.from_now) do
+  at_time(number_of.minutes.from_now) do
     step 'I should be reminded with a push notification'
   end
 end
@@ -31,6 +31,10 @@ step 'the next reminder should occur in :number_of minutes' do |number_of|
   end
 end
 
-step 'I confirm the most recent reminder' do
+step 'I report being aware (again)' do
   most_recent_reminder.confirm
+end
+
+step 'I report being unaware (again)' do
+  most_recent_reminder.deny
 end

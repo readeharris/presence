@@ -13,10 +13,17 @@ class PushNotification
 
   def confirm
     @confirmation_status = :confirmed
-    @user.update_interval(@confirmation_status)
+    update_user_interval
   end
 
-  def confirmed?
-    @confirmation_status == :confirmed
+  def deny
+    @confirmation_status = :denied
+    update_user_interval
+  end
+
+  private
+
+  def update_user_interval
+    @user.update_interval(@confirmation_status)
   end
 end

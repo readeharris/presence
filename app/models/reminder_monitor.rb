@@ -16,8 +16,9 @@ class ReminderMonitor
   end
 
   def update_interval(confirmation_status)
-    if confirmation_status == :confirmed
-      @interval += 5.minutes
+    case confirmation_status
+    when :confirmed then @interval += 5.minutes
+    when :denied then @interval -= 5.minutes
     end
   end
 

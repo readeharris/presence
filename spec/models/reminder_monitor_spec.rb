@@ -13,6 +13,11 @@ describe ReminderMonitor do
       reminder_monitor = ReminderMonitor.new(stub)
       expect { reminder_monitor.update_interval(:confirmed) }.to change { reminder_monitor.interval }.by(5.minutes)
     end
+
+    it 'decreases the interval by 5 minutes if given a confirmation status of :denied' do
+      reminder_monitor = ReminderMonitor.new(stub)
+      expect { reminder_monitor.update_interval(:denied) }.to change { reminder_monitor.interval }.by(-5.minutes)
+    end
   end
 
   context 'if the monitor has never reminded the user' do

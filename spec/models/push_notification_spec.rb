@@ -21,20 +21,32 @@ describe PushNotification do
       expect(notification.confirmation_status).to eq(:no_response)
     end
 
-    it 'can be confirmed' do
+    it 'is :confirmed if the notification is confirmed' do
       user = stub_everything
       notification = PushNotification.new(user)
       notification.confirm
-      expect(notification).to be_confirmed
+      expect(notification.confirmation_status).to eq(:confirmed)
+    end
+
+    it 'is :denied if the notification is denied' do
+      user = stub_everything
+      notification = PushNotification.new(user)
+      notification.deny
+      expect(notification.confirmation_status).to eq(:denied)
     end
   end
 
-  it "updates the user's interval with its confirmation status when it is confirmed" do
+  it "updates the user's interval with :confirmed status when it is confirmed" do
     user = stub(:update_interval)
     notification = PushNotification.new(user)
-
     notification.confirm
-
     expect(user).to have_received(:update_interval).with(:confirmed)
+  end
+
+  it "updates the user's interval with :denied status when it is denied" do
+    user = stub(:update_interval)
+    notification = PushNotification.new(user)
+    notification.deny
+    expect(user).to have_received(:update_interval).with(:denied)
   end
 end

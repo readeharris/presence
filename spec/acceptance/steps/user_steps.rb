@@ -7,8 +7,8 @@ step 'I am a Presence user' do
   @test_user.notify_observers(@test_user)
 end
 
-step 'I have set a starting interval of 10 minutes' do
-  @test_user.reminder_monitor.interval = 10.minutes
+step 'I have set a starting interval of :number_of minutes' do |number_of|
+  @test_user.reminder_monitor.interval = number_of.minutes
 end
 
 step 'I am using the default interval' do
