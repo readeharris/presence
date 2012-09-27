@@ -1,4 +1,6 @@
 class ReminderMonitor
+  attr_accessor :interval
+
   def initialize(user)
     @user = user
     @created_at = Time.now
@@ -13,10 +15,16 @@ class ReminderMonitor
     end
   end
 
+  def update_interval(confirmation_status)
+    if confirmation_status == :confirmed
+      @interval += 5.minutes
+    end
+  end
+
   private
 
   def send_push_notification_to_user
-    PushNotification.new.push_to(@user)
+    PushNotification.new(@user).deliver
   end
 
   def update_last_reminded_time
@@ -36,10 +44,10 @@ class ReminderMonitor
   end
 
   def interval_passed_since_last_reminded?
-    Time.now > (@last_reminded_at + @interval)
+    Time.now >= (@last_reminded_at + @interval)
   end
 
   def interval_passed_since_created?
-    Time.now > (@created_at + @interval)
+    Time.now >= (@created_at + @interval)
   end
 end

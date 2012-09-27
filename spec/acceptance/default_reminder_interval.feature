@@ -6,15 +6,12 @@ Feature: Default Reminder Interval
   Background:
     Given I am a Presence user
     And I am using the default interval
-    And push notifications are stubbed
 
-  Scenario: User receives her first notification after 30 minutes have passed
-    Given 30 minutes pass
-    And the reminder job runs
-    Then I should be reminded via push notification
+  Scenario: User receives her first reminder after 30 minutes have passed
+    When 30 minutes pass
+    Then I should be reminded with a push notification
 
-  Scenario: User does not receive her first notification before 30 minutes have passed
-    Given 29 minutes pass
-    And the reminder job runs
-    Then I should not be reminded via push notification
+  Scenario: User does not receive her first reminder before 30 minutes have passed
+    When 29 minutes pass
+    Then I should not be reminded
 
