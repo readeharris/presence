@@ -17,12 +17,24 @@ class ReminderMonitor
 
   def update_interval(confirmation_status)
     case confirmation_status
-    when :confirmed then @interval += 5.minutes
-    when :denied then @interval -= 5.minutes
+    when :confirmed then increase_interval
+    when :denied then decrease_interval
     end
   end
 
   private
+
+  def increase_interval
+    @interval += 5.minutes
+  end
+
+  def decrease_interval
+    @interval -= 5.minutes
+
+    if @interval < 5.minutes
+      @interval = 5.minutes
+    end
+  end
 
   def send_push_notification_to_user
     PushNotification.new(@user).deliver

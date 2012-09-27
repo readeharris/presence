@@ -21,14 +21,14 @@ describe PushNotification do
       expect(notification.confirmation_status).to eq(:no_response)
     end
 
-    it 'is :confirmed if the notification is confirmed' do
+    it 'is :confirmed if the notification has been confirmed' do
       user = stub_everything
       notification = PushNotification.new(user)
       notification.confirm
       expect(notification.confirmation_status).to eq(:confirmed)
     end
 
-    it 'is :denied if the notification is denied' do
+    it 'is :denied if the notification has been denied' do
       user = stub_everything
       notification = PushNotification.new(user)
       notification.deny

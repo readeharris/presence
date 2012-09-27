@@ -21,7 +21,7 @@ step 'the first reminder should occur in :number_of minutes' do |number_of|
   end
 end
 
-step 'the next reminder should occur in :number_of minutes' do |number_of|
+step 'the next reminder should (still) occur in :number_of minutes' do |number_of|
   at_time(most_recent_reminder.time + number_of.minutes - 1.second) do
     step 'I should not be reminded'
   end
