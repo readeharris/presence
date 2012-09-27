@@ -14,6 +14,7 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include TimeHelpers
+  config.include AcceptanceHelpers::ReminderHelpers
 
   # Global Setup/Teardown
   config.before(:each) do

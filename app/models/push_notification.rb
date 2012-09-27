@@ -7,7 +7,7 @@ class PushNotification
     @confirmation_status = :no_response
   end
 
-  def send_to_user
+  def deliver
     @user.add_reminder(self)
   end
 

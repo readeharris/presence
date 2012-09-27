@@ -6,11 +6,11 @@ describe PushNotification do
     end
   end
 
-  describe 'sending to a user' do
+  describe 'delivering' do
     it "adds itself to the user's reminders" do
       user = stub(:add_reminder)
       push_notification = PushNotification.new(user)
-      push_notification.send_to_user
+      push_notification.deliver
       expect(user).to have_received(:add_reminder).with(push_notification)
     end
   end
@@ -24,9 +24,7 @@ describe PushNotification do
     it 'can be confirmed' do
       user = stub_everything
       notification = PushNotification.new(user)
-
       notification.confirm
-
       expect(notification).to be_confirmed
     end
   end

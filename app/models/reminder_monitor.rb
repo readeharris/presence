@@ -16,15 +16,15 @@ class ReminderMonitor
   end
 
   def update_interval(confirmation_status)
-    case confirmation_status
-    when :confirmed then @interval += 5.minutes
+    if confirmation_status == :confirmed
+      @interval += 5.minutes
     end
   end
 
   private
 
   def send_push_notification_to_user
-    PushNotification.new(@user).send_to_user
+    PushNotification.new(@user).deliver
   end
 
   def update_last_reminded_time

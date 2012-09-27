@@ -9,7 +9,7 @@ describe ReminderMonitor do
   end
 
   describe 'updating interval' do
-    it 'increases the interval by 5 minutes if the confirmation status is :confirmed' do
+    it 'increases the interval by 5 minutes if given a confirmation status of :confirmed' do
       reminder_monitor = ReminderMonitor.new(stub)
       expect { reminder_monitor.update_interval(:confirmed) }.to change { reminder_monitor.interval }.by(5.minutes)
     end
@@ -23,7 +23,7 @@ describe ReminderMonitor do
       freeze_time do
         reminder_monitor = ReminderMonitor.new(user)
         at_time(30.minutes.from_now - 1.second) { reminder_monitor.remind }
-        push_notification.should have_received(:send_to_user).never
+        push_notification.should have_received(:deliver).never
       end
     end
 
@@ -34,7 +34,7 @@ describe ReminderMonitor do
       freeze_time do
         reminder_monitor = ReminderMonitor.new(user)
         at_time(30.minutes.from_now) { reminder_monitor.remind }
-        push_notification.should have_received(:send_to_user).once
+        push_notification.should have_received(:deliver).once
       end
     end
   end
@@ -50,7 +50,7 @@ describe ReminderMonitor do
         at_time(30.minutes.from_now) { reminder_monitor.remind }
         at_time(60.minutes.from_now - 1.second) { reminder_monitor.remind }
 
-        push_notification.should have_received(:send_to_user).once
+        push_notification.should have_received(:deliver).once
       end
     end
 
@@ -64,13 +64,13 @@ describe ReminderMonitor do
         at_time(30.minutes.from_now) { reminder_monitor.remind }
         at_time(60.minutes.from_now) { reminder_monitor.remind }
 
-        push_notification.should have_received(:send_to_user).twice
+        push_notification.should have_received(:deliver).twice
       end
     end
   end
 
   def stub_push_notification
-    stub(:send_to_user).tap do |push_notification|
+    stub(:deliver).tap do |push_notification|
       PushNotification.stubs(:new).returns(push_notification)
     end
   end

@@ -17,14 +17,11 @@ end
 
 step 'the reminder job runs' do
   UserReminder.remind(UserObserver.all_users)
-
-  # Used for further testing of reminders.
-  @most_recent_reminder = @test_user.reminders.last
 end
 
 step 'I should be reminded with a push notification' do
   expect { step 'the reminder job runs' }.to change { @test_user.reminders.count }.by(1)
-  expect(@most_recent_reminder).to be_a PushNotification
+  expect(most_recent_reminder).to be_a PushNotification
 end
 
 step 'I should not be reminded' do
