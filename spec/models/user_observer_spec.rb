@@ -3,9 +3,11 @@ require_relative '../../app/observers/user_observer'
 describe UserObserver do
   it 'keeps track of users it is notified about' do
     users = [stub, stub, stub]
+
     users.each do |user|
       UserObserver.update(user)
     end
+
     expect(UserObserver.all_users).to eq(users)
   end
 
@@ -15,7 +17,9 @@ describe UserObserver do
 
   it 'can forget about all users it is tracking' do
     UserObserver.update(stub)
+
     UserObserver.forget_users
+
     expect(UserObserver.all_users).to be_empty
   end
 end

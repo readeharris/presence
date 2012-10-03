@@ -4,7 +4,9 @@ require_relative '../../app/models/push_notification'
 describe ReminderMonitor do
   it 'allows its interval to be set' do
     reminder_monitor = ReminderMonitor.new(stub)
+
     reminder_monitor.interval = 10.minutes
+
     expect(reminder_monitor.interval).to eq(10.minutes)
   end
 
@@ -22,30 +24,34 @@ describe ReminderMonitor do
     it 'does not decrease the interval below 5 minutes' do
       reminder_monitor = ReminderMonitor.new(stub)
       reminder_monitor.interval = 5.minutes
+
       reminder_monitor.update_interval(:denied)
+
       expect(reminder_monitor.interval).to eq(5.minutes)
     end
   end
 
   context 'if the monitor has never reminded the user' do
     it 'does not remind the user if not enough time has passed since the monitor was created' do
-      user = stub
-      push_notification = stub_push_notification
-
       freeze_time do
+        user = stub
+        push_notification = stub_push_notification
         reminder_monitor = ReminderMonitor.new(user)
+
         at_time(30.minutes.from_now - 1.second) { reminder_monitor.remind }
+
         push_notification.should have_received(:deliver).never
       end
     end
 
     it 'reminds the user if enough time has passed since the monitor was created' do
-      user = stub
-      push_notification = stub_push_notification
-
       freeze_time do
+        user = stub
+        push_notification = stub_push_notification
         reminder_monitor = ReminderMonitor.new(user)
+
         at_time(30.minutes.from_now) { reminder_monitor.remind }
+
         push_notification.should have_received(:deliver).once
       end
     end
@@ -53,13 +59,12 @@ describe ReminderMonitor do
 
   context 'if the monitor has previously reminded the user' do
     it 'does not remind the user if not enough time has passed since the last reminder' do
-      user = stub
-      push_notification = stub_push_notification
-
       freeze_time do
+        user = stub
+        push_notification = stub_push_notification
         reminder_monitor = ReminderMonitor.new(user)
 
-        at_time(30.minutes.from_now) { reminder_monitor.remind }
+        at_time(30.minutes.from_now)            { reminder_monitor.remind }
         at_time(60.minutes.from_now - 1.second) { reminder_monitor.remind }
 
         push_notification.should have_received(:deliver).once
@@ -67,10 +72,9 @@ describe ReminderMonitor do
     end
 
     it 'reminds the user if enough time has passed since the last reminder' do
-      user = stub
-      push_notification = stub_push_notification
-
       freeze_time do
+        user = stub
+        push_notification = stub_push_notification
         reminder_monitor = ReminderMonitor.new(user)
 
         at_time(30.minutes.from_now) { reminder_monitor.remind }

@@ -3,16 +3,18 @@ require_relative '../../app/models/reminder_monitor'
 require_relative '../../app/observers/user_observer'
 
 describe User do
-  let(:user) { User.new }
-
   it 'keeps track of reminders it has received' do
+    user = User.new
     reminder = stub
+
     user.add_reminder(reminder)
+
     expect(user.reminders).to include(reminder)
   end
 
   describe 'reminder monitor' do
     it 'has a reminder monitor by default' do
+      user = User.new
       user.reminder_monitor.should be_a ReminderMonitor
     end
 
